@@ -58,6 +58,8 @@ $(document).ready(function () {
                    var fare = rowEl.find('.fare').text();
                    console.log(time+' '+fare)
                 });
+                
+                //todo: get estimated time of arrival
             }
         });
 
@@ -90,9 +92,14 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     directionsService.route({
         origin: ticket.origin+', gh',
         destination: ticket.destination+', gh',
-        travelMode: 'DRIVING'
+        travelMode: 'DRIVING',
+        drivingOptions: {
+            departureTime: new Date(Date.now()),
+            trafficModel: 'pessimistic'
+        }
     }, function(response, status) {
         if (status === 'OK') {
+            console.log(response)
             directionsDisplay.setDirections(response);
         } else {
             window.alert('Directions request failed due to ' + status);
