@@ -3,7 +3,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var index =  require('./routes/index');
 var tasks =  require('./routes/tasks');
-var port = 2000;
+var port = process.env.PORT || 2000;
 var app = express();
 
 //View Engine
