@@ -70,7 +70,8 @@ $(document).ready(function(){
             "Tema",
             "Dormaa",
             "Berekum",
-            "Sunyani"
+            "Sunyani",
+            "Tamale"
         ];
         $( "#origin, #destination").autocomplete({
             source: cities
@@ -90,6 +91,7 @@ $(document).ready(function() {
     
     //Process ticket info
      $('#get-ticket').on('click', function() {
+        $("#error").hide();
         var ticket = {
             'origin': cap($('#origin').val()),
             'destination': cap($('#destination').val()),
