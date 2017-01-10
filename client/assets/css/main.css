@@ -347,13 +347,10 @@ ul.nav.navbar-nav.navbar-right{
     *border-bottom-width: 2px;
 }
 
-input:invalid {
-  border: 1px solid red;
+#labelselect{
+    color: white;
 }
 
-input:valid {
-  border: 1px solid green;
-}
 /*=================================================
 ||				5. Our Blazzing offers
 ==================================================*/
