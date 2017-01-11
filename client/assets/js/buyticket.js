@@ -99,7 +99,10 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         }
     }, function(response, status) {
         if (status === 'OK') {
-            console.log(response)
+            $("#duration").html('\
+                             time: '+response.routes[0].legs[0].duration.text+'\
+                                ')
+//            console.log(response.routes[0].legs[0].duration.text)
             directionsDisplay.setDirections(response);
         } else {
             window.alert('Directions request failed due to ' + status);

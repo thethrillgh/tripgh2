@@ -33,3 +33,10 @@
 	width: 100%;
 	height: 414px;
 }
+
+
+.duration-text{
+    font-size: 14px !important;
+    color: black !important;
+    font-weight: bolder;
+}
