@@ -26,7 +26,7 @@ $(document).ready(function () {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
     
-        
+        //get ticket div and populate with list of tickets
         ticket = {
             'origin': cap(getUrlVars('origin')),
             'destination': cap(getUrlVars('destination')),
@@ -35,9 +35,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/api/tickets/'+ticket.origin+'/'+ticket.destination+'/'+ticket.day,
             contentType: 'application/json',
-            success: function(response) {
-//                console.log(response);
-                
+            success: function(response) {                
                 //Show list of tickets
                 var table = $('#tickettable');
                 var tablebody = $('#ticketlist');
@@ -56,23 +54,22 @@ $(document).ready(function () {
                    var rowEl = $(this).closest('tr');
                    var time = rowEl.find('.time').text();
                    var fare = rowEl.find('.fare').text();
-                   console.log(time+' '+fare)
+                   console.log(time+' '+fare);
+                    $("#ticketinfo2").hide();
+                   $('#paymentsection').show();
                 });
-                
-                //todo: get estimated time of arrival
             }
         });
 
-
-        
-        
-        
+        //Ticket Header
         $('#journey').html('');
         $('#journey').append('\
             <span>'+ ticket.origin+ '</span>\
             <i class="ion-arrow-right-a"></i><span> '+ticket.destination+'</span>\
             <span> on '+ticket.day+'</span>\
         ');
+        
+        
     }
 });
 

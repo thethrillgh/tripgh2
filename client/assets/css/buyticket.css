@@ -1,3 +1,4 @@
+/*ticket-list and buy*/
 .contact-and-map .section-title{
 	font-weight: 400;
 	text-align: left;
@@ -40,3 +41,10 @@
     color: black !important;
     font-weight: bolder;
 }
+
+/*payforticket*/
+#paymentsection{
+    display: none;
+    transition: all 2s;
+}
+
