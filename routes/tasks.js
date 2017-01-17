@@ -31,7 +31,12 @@ router.get('/tickets/:origin/:destination/:day', function(req, res, next){
     });
 });
 
-router.get('/test/:fname/:lname', function(req, res, next){
+//get payemnt, confirm and send ticket details
+router.post('/commerce', function(req, res, next){
+    
+});
+
+router.get('/test/:fname/:lname', function(req, res, next){ 
     res.json({
         'body': req.body,
         'params': req.params.lname
