@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
 var db = mongojs('mongodb://issifu.suhununu:openme12@ds141128.mlab.com:41128/heroku_sm98ptzk', ['cities']);
+const uuid = require('uuid/v1');
 
 //Get all tickets
 router.get('/tickets', function(req, res, next){
@@ -23,17 +24,21 @@ router.get('/tickets/:origin/:destination/:day', function(req, res, next){
     db.cities.find(
         { 'origin':req.params.origin, 'destination': req.params.destination, 'days': req.params.day},
     
-    function(error, tasks){
+    function(error, ticket){
         if(error){
             res.send(error);
         }
-        res.json(tasks);
+        res.json(ticket);
     });
 });
 
-//get payemnt, confirm and send ticket details
-router.post('/commerce', function(req, res, next){
-    
+//get payment, confirm and send ticket details
+router.post('/tickets', function(req, res, next){
+    var user  = req.body;
+    if (user.tel == '6178348188' && user.pin == '1234'){
+        user.code = uuid();
+        res.send(user);
+    }
 });
 
 router.get('/test/:fname/:lname', function(req, res, next){ 

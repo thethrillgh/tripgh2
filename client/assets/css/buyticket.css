@@ -42,9 +42,22 @@
     font-weight: bolder;
 }
 
+.payment{
+    margin-left: 0;
+    padding-left: 0;
+}
+
 /*payforticket*/
 #paymentsection{
     display: none;
     transition: all 2s;
+}
+
+@media (max-width: 480px){
+    .payment{
+        margin-left: 0;
+        padding-left: 0;
+        margin-bottom: 15px;
+    }
 }
 

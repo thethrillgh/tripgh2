@@ -15,6 +15,7 @@ function getUrlVars(name, url) {
 }
 //initialize ticket object
 var ticket = {};
+var user = {};
 
 
 $(document).ready(function () {
@@ -54,7 +55,10 @@ $(document).ready(function () {
                    var rowEl = $(this).closest('tr');
                    var time = rowEl.find('.time').text();
                    var fare = rowEl.find('.fare').text();
-                   console.log(time+' '+fare);
+                   user.time = time;
+                   user.fare = fare;
+                   user.origin = ticket.origin;
+                   user.destination = ticket.destination;
                     $("#ticketinfo2").hide();
                    $('#paymentsection').show();
                 });
@@ -68,6 +72,24 @@ $(document).ready(function () {
             <i class="ion-arrow-right-a"></i><span> '+ticket.destination+'</span>\
             <span> on '+ticket.day+'</span>\
         ');
+        
+        //payment and contact info
+        $("#pay-ticket").on('click', function(){
+            var tel = $("#tel").val();
+            var pin = $("#pin").val();
+            user.tel = tel;
+            user.pin = pin;
+            $.ajax({
+                url: '/api/tickets',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(user),
+                success: function(response) {
+                    console.log(response);
+                    
+                }
+            });
+        });
         
         
     }
@@ -99,7 +121,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
             $("#duration").html('\
                              time: '+response.routes[0].legs[0].duration.text+'\
                                 ')
-//            console.log(response.routes[0].legs[0].duration.text)
             directionsDisplay.setDirections(response);
         } else {
             window.alert('Directions request failed due to ' + status);
