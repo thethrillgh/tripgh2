@@ -67,6 +67,26 @@
     display: none;
 }
 
+.submit-button {
+  margin-top: 10px;
+}
+
+.pad{
+    padding-left: 0;
+}
+
+.input-group-addon{
+    background-color: #eceeef;
+}
+
+.custom-button1{
+	color: #fff;
+	width: 100%;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	transition: all .4s ease-in-out;
+}
 @media (max-width: 480px){
     .payment{
         margin-left: 0;

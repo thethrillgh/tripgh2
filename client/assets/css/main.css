@@ -56,7 +56,7 @@ p{
 }
 .border-radius{
 	border-radius: 0 !important;
-	border-color: #42DCA3;
+	border-color: #42DCA3 !important;
 	height: 45px;
 }
 p:hover{
