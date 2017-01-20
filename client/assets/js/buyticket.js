@@ -61,6 +61,7 @@ $(document).ready(function () {
                    user.destination = ticket.destination;
                     $("#ticketinfo2").hide();
                    $('#paymentsection').show();
+                    $(".amount").text(user.fare);
                 });
             }
         });
@@ -140,6 +141,7 @@ $(document).ready(function () {
           });
 
           function stripeResponseHandler(status, response) {
+            console.log(response)
             if (response.error) {
               $('.error')
                 .removeClass('hide')
@@ -147,11 +149,10 @@ $(document).ready(function () {
                 .text(response.error.message);
             } else {
               // token contains id, last4, and card type
-                console.log(response)
               var token = response['id'];
               // insert the token into the form so it gets submitted to the server
               $form.find('input[type=text]').empty();
-              $form.append("<input type='hidden' name='reservation[stripe_token]' value='" + token + "'/>");
+              $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
               $form.get(0).submit();
             }
           }

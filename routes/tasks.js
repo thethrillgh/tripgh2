@@ -5,7 +5,7 @@ var mongojs = require('mongojs');
 var db = mongojs('mongodb://issifu.suhununu:openme12@ds141128.mlab.com:41128/heroku_sm98ptzk', ['cities']);
 const uuid = require('uuid/v1');
 var stripe = require("stripe")(
-  "pk_test_bVSt9LZIbqjtzWjXyDXerEUW"
+  "sk_test_xWYoUSXSZLlNHK0k4r0ekWxA"
 );
 
 //Get all tickets
@@ -37,12 +37,20 @@ router.get('/tickets/:origin/:destination/:day', function(req, res, next){
 
 //get payment, confirm and send ticket details
 router.post('/tickets', function(req, res, next){
-//    var user  = req.body;
-//    if (user.tel == '6178348188' && user.pin == '1234'){
-//        user.code = uuid();
-//        res.send(user);
-//    }
-      res.send(JSON.stringify(req))
+        var stripeToken = req.body.stripeToken;
+        var charge = {
+            amount: 25000,
+            currency: 'usd',
+            card: stripeToken
+        };
+        stripe.charges.create(charge, function(err, charge){
+           if(err){
+               console.log(err);
+               res.send('error');
+           }  else {
+               res.send('success')
+           }
+        });
 });
 
 router.get('/test/:fname/:lname', function(req, res, next){ 
