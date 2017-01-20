@@ -91,6 +91,14 @@ $(document).ready(function () {
             });
         });
         
+        $("#pay-stripe").on('click', function(){
+              $("#paymentsection").hide();
+              $("#stripe-form").show();
+              var mm = $('input[name=payrad]:checked', '#selectpayment').val() 
+              var visa = $('input[name=payrad]:checked', '#selectpayment').val();
+              console.log(visa)
+        });
+        
         
     }
 });

@@ -53,6 +53,20 @@
     transition: all 2s;
 }
 
+.imagerow{
+    margin-bottom: 50px;
+}
+
+.imagediv{
+    width: 100px;
+    height: 50px;
+    object-fit: contain;
+}
+
+#stripe-form{
+    display: none;
+}
+
 @media (max-width: 480px){
     .payment{
         margin-left: 0;

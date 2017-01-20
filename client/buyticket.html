@@ -92,32 +92,33 @@
                         </tbody>
                     </table>
 				</div> <!-- /.col-sm-6 -->
-				<div id="paymentsection" class="col-sm-6">
-					<h2 class="section-title">
-                        Payment and Contact Information
-                    </h2>
-				    <div class="payment col-md-6 col-sm-6">
-                        <div class="input-group">
-                            <input id="tel" type="tel" class="form-control border-radius border-right" placeholder="Phone Number"/>
-                            <span class="input-group-addon border-radius custom-addon">
-                                 <i class="ion-android-call"></i>
-                            </span>
+<!--                pay with stripe-->
+                    <div id="paymentsection" class="col-md-6 col-sm-6">
+                        <h2 class="section-title">Payment Method</h2>
+                         <form id="selectpayment">
+                            <div class="imagerow radio">
+                              <label><input type="radio" value="visa" name="payrad"><img src="assets/images/Visa.png" class="imagediv">
+                              <img src="assets/images/mastercard.svg.png" class="imagediv">
+                              <img src="assets/images/ameriexpress.png" class="imagediv ameri">
+                              <img src="assets/images/discover.jpg" class="imagediv">  
+                              </label>
+                            </div>
+                            <div class="imagerow radio">
+                              <label><input type="radio" value="mm" name="payrad"><img src="assets/images/mtn.png" class="imagediv">
+                              <img src="assets/images/vodafone.jpg" class="imagediv">
+                              <img src="assets/images/airtel.jpg" class="imagediv ameri">
+                              <img src="assets/images/tigo.png" class="imagediv">  
+                              </label>
+                            </div>
+                          </form>
+                        <div id="pay-stripe" class="btn btn-default border-radius custom-button">
+                            Pay
                         </div>
                     </div>
-				    <div class="payment col-md-3 col-sm-6">
-                        <div class="input-group">
-                            <input id="pin" type="tel" class="form-control border-radius border-right" placeholder="Pin"/>
-                            <span class="input-group-addon border-radius custom-addon">
-                               <i class="ion-lock-combination"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="payment col-md-3 col-sm-6">
-                        <div id="pay-ticket" class="btn btn-default border-radius custom-button">
-                            Submit
-                        </div>
-                    </div>
-				</div> <!-- /.col-sm-6 -->
+<!--                pay with stripe-->
+                <div id="stripe-form" class="col-sm-6">
+                hi
+                </div>
                 
 <!--                google maps-->
 				<div class="col-sm-6">
