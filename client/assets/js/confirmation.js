@@ -25,7 +25,10 @@ $(document).ready(function () {
             $('.faretext').text(user.fare);
             $('.timetext').text(user.time);
             $('.daytext').text(user.day);
-            console.log(user)
+            var rep = parseInt(user.time.split(":")[0])-1;
+            var report = rep+":"+user.time.split(":")[1];
+            $('.reportingtext').text(report);
+            
         }
     }
 });
