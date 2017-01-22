@@ -53,8 +53,8 @@
     transition: all 2s;
 }
 
-.imagerow{
-    margin-bottom: 50px;
+#selectpayment{
+    margin-bottom: 20px;
 }
 
 .imagediv{
@@ -75,10 +75,83 @@
     padding-left: 0;
 }
 
+#center-block{
+    float: none;
+    margin: 0 auto;
+}
 .input-group-addon{
     background-color: #eceeef;
 }
 
+.con-pay{
+    padding: 0;
+}
+
+.image-row{
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#radio{
+    display:none; 
+}
+
+.paypal-blue{
+    display: inline-block;
+    padding: 10px 0;
+    margin-right: 15px;
+}
+
+.paypal, .visa, .mm{
+    border: 2px solid #cdcdcd;
+    opacity: 1;
+    padding: 20px 20px;
+    background: #fff;
+    color: #212121;
+    cursor:pointer;
+}
+
+.paypal:hover, .visa:hover, .mm:hover{
+    box-shadow: 4px 4px 10px 5px #cdcdcd;
+}
+.symbol-block-selected{
+    border: 2px solid #42DCA3;
+    box-shadow: 4px 4px 10px #cdcdcd;
+}
+
+.paypal-credit{
+    display: inline-block;
+    border-left: 1px solid #ccc;
+    padding: 10px 0 10px 15px;
+}
+
+.paypal-credit::before{
+    content: "\00a0";
+    display: block;
+    width: 76px;
+    height: 25px;
+    background: url('../images/paypalcredit.png') center center no-repeat;
+    background-size: contain;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+.paypal-blue::before{
+    background: url("../images/paypal.png") center center no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+    width: 100px;
+    height: 25px;
+    content: "\00a0";
+    display: block;
+    cursor: pointer;
+}
+.symbol{
+    display: inline-block;
+    cursor: pointer;
+}
 .custom-button1{
 	color: #fff;
 	width: 100%;
@@ -86,6 +159,47 @@
 	padding: 10px;
 	font-size: 16px;
 	transition: all .4s ease-in-out;
+}
+
+.symboltext{
+    color: black;
+    font-weight: 300;
+    text-align: center;
+    width: 240px;
+}
+
+.allcc{
+    display: inline-block;
+    padding: 10px 0 10px;
+}
+
+.allcc::before{
+    content: "";
+    width: 240px;
+    height: 26px;
+    background: url("../images/creditcards.png") center center no-repeat;
+    background-position: center center;
+    background-size: contain;
+    display: block;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.allmm{
+    display: inline-block;
+    padding: 10px 0 10px;
+}
+
+.allmm::before{
+    content: "";
+    width: 240px;
+    height: 46px;
+    background: url("../images/all.jpg") center center no-repeat;
+    background-position: center center;
+    background-size: contain;
+    display: block;
+    cursor: pointer;
+    overflow: hidden;
 }
 @media (max-width: 480px){
     .payment{
