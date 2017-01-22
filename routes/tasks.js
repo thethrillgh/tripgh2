@@ -1,4 +1,3 @@
-//Backend API for CRUD actions on database
 var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
@@ -39,89 +38,19 @@ router.get('/tickets/:origin/:destination/:day', function(req, res, next){
 router.post('/tickets', function(req, res, next){
         var stripeToken = req.body.stripeToken;
         var charge = {
-            amount: 25000,
+            amount: req.body.fare*100,
             currency: 'usd',
-            card: stripeToken
+            card: stripeToken,
+            metadata: {'email': req.body.emailadd}
         };
         stripe.charges.create(charge, function(err, charge){
            if(err){
-               console.log(err);
-               res.send('error');
+               res.send(JSON.stringify(err));
            }  else {
-               res.send('success')
+               res.redirect("/receipt")
            }
         });
 });
 
-router.get('/test/:fname/:lname', function(req, res, next){ 
-    res.json({
-        'body': req.body,
-        'params': req.params.lname
-    })
-});
-
-
-// Get Single Task
-router.get('/task/:id', function(req, res, next){
-    db.tasks.findOne({_id: mongojs.ObjectId(req.params.id)}, function(error, task){
-        if(error){
-            res.send(error);
-        }
-        res.json(task);
-    });
-});
-
-//Save Task
-router.post('/task', function(req, res, next){
-    var task =  req.body;
-    if(!task.title || !(task.isDone+'')){
-        res.status(400);
-        res.json({
-            "error": "Bad data"
-        });
-    } else {
-        db.tasks.save(task, function(error, task){
-            if(error){
-                res.send(error);
-            }
-            res.json(task);
-        });
-    }
-});
-
-// Delete Task
-router.delete('/task/:id', function(req, res, next){
-    db.tasks.remove({_id: mongojs.ObjectId(req.params.id)}, function(error, task){
-        if(error){
-            res.send(error);
-        }
-        res.json(task);
-    });
-});
-
-// Update task
-router.put('/task/:id', function(req, res, next){
-    var task = req.body;
-    var updTask = {};
-    if(task.isDone){
-        updTask.isDone = task.isDone;
-    }
-    if(task.title){
-        updTask.title = task.title;
-    }
-    if(!updTask){
-        res.status(400);
-        res.json({
-            "error": "Bad data"
-        })
-    } else {
-            db.tasks.update({_id: mongojs.ObjectId(req.params.id)}, updTask, {},  function(error, task){
-            if(error){
-                res.send(error);
-            }
-            res.json(task);
-            });
-        }
-});
 
 module.exports =  router;

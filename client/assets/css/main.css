@@ -10,6 +10,10 @@ body
 	overflow-x: hidden;
 	color: #555555;
 }
+
+html,body{
+    height: 100%
+}
 /*Owl Carousel*/
 .owl-prev, .owl-next
 {

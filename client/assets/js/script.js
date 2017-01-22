@@ -28,7 +28,7 @@ $(document).ready(collapseNavbar);
 
 //flexslider
  $(window).load(function() {
-     if(!$('body').is('.buyticket')){
+     if(!$('body').is('.buyticket') && !$('body').is('.confirmation')){
         $('.flexslider').flexslider({
             controlNav: false
         });

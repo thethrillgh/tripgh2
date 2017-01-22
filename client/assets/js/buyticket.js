@@ -91,15 +91,14 @@ $(document).ready(function () {
                 }
             });
         });
-        
+        //select payment
         $("#pay-stripe").on('click', function(){
               $("#paymentsection").hide();
               $("#stripe-form").show();
               var mm = $('input[name=payrad]:checked', '#selectpayment').val() 
               var visa = $('input[name=payrad]:checked', '#selectpayment').val();
-              console.log(visa)
         });
-        
+//          Form Validation
           $(function() {
           $('form.require-validation').bind('submit', function(e) {
             var $form         = $(e.target).closest('form'),
@@ -131,6 +130,7 @@ $(document).ready(function () {
               e.preventDefault();
               Stripe.setPublishableKey($form.data('stripe-publishable-key'));
               Stripe.createToken({
+                name: $('.name').val(),
                 number: $('.card-number').val(),
                 cvc: $('.card-cvc').val(),
                 exp_month: $('.card-expiry-month').val(),
@@ -153,15 +153,22 @@ $(document).ready(function () {
               // insert the token into the form so it gets submitted to the server
               $form.find('input[type=text]').empty();
               $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+              $form.append("<input type='hidden' name='fare' value=" + user.fare + ">");
+              $form.append("<input type='hidden' name='time' value=" + user.time + ">");
+              $form.append("<input type='hidden' name='origin' value=" + user.origin + ">");
+              $form.append("<input type='hidden' name='destination' value=" + user.destination + ">");
+              user.email = $('.emailadd').val();
+              user.name = $('.name').val();
+              user.charge= response;
+              user.day= ticket.day;
+              //sessionStorage
+              sessionStorage.setItem("user", JSON.stringify(user));
               $form.get(0).submit();
             }
           }
-        })
+        });
     }
 });
-
-
-
 
 //intialize map
 function initMap() {

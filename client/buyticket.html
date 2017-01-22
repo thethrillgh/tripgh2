@@ -126,15 +126,23 @@
                             <div class='pad col-md-6'>
                                 <label for="1" class='control-label'>Name on Card</label>
                                 <div class='input-group col-xs-12 form-group required'>
-                                <input id="1" class='form-control border-radius border-right' size='4' type='text'/><span class="input-group-addon border-radius custom-addon"><i class="ion-card"></i></span>
+                                <input id="1" class='form-control border-radius border-right name' size='4' name="name" type='text'/><span class="input-group-addon border-radius custom-addon"><i class="ion-card"></i></span>
                                 </div>
                             </div>
                             <div class='pad col-md-6'>
                               <div class='input-group col-xs-12 form-group card required'>
+                                <label class='control-label'>Email Address </label>
+                                <input autocomplete='off' class='form-control border-radius emailadd' size='20' type='email' name='emailadd'>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="pad row">
+                             <div class='pad col-md-12'>
+                              <div class='input-group col-xs-12 form-group card required'>
                                 <label class='control-label'>Card Number</label>
                                 <input autocomplete='off' class='form-control card-number border-radius' size='20' type='text'>
                               </div>
-                            </div>
+                            </div>                             
                         </div>
                         <div class='pad row'>
                           <div class='pad col-xs-4 form-group cvc required'>
