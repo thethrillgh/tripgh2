@@ -36,5 +36,9 @@ a.brand-logo1 span{
         font-weight: 400;
         margin-bottom: 0;
     }
+    
+    #tickettable{
+        padding-bottom: 70px;
+    }
 }
 
