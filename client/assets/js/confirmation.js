@@ -4,6 +4,11 @@
 $(document).ready(function () {
     
     if($('body').is('.confirmation')){
+        //footer issue
+        if ($(window).width() < 768) {
+            $('#footer').removeClass("navbar-fixed-bottom")
+        }
+        
         
         //capitalize first letter
         function cap(string) {
