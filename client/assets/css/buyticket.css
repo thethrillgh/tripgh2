@@ -171,15 +171,16 @@
 .allcc{
     display: inline-block;
     padding: 10px 0 10px;
+    width: 210px;
 }
 
 .allcc::before{
     content: "";
-    width: 240px;
-    height: 26px;
+    width: 100%;
+    height: 46px;
     background: url("../images/creditcards.png") center center no-repeat;
     background-position: center center;
-    background-size: contain;
+    background-size: cover;
     display: block;
     cursor: pointer;
     overflow: hidden;
@@ -188,15 +189,16 @@
 .allmm{
     display: inline-block;
     padding: 10px 0 10px;
+    width: 210px;
 }
 
 .allmm::before{
     content: "";
-    width: 240px;
+    width: 100%;
     height: 46px;
     background: url("../images/all.jpg") center center no-repeat;
     background-position: center center;
-    background-size: contain;
+    background-size: cover;
     display: block;
     cursor: pointer;
     overflow: hidden;

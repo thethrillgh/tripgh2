@@ -98,57 +98,59 @@ $(document).ready(function () {
                 mm: true
         }
         //selection logic
+        function toggle(form){
+            $(form).toggleClass("symbol-block-selected");
+        }
         $('#selectpayment input').on('click', function() {
            selectedpayment=$('input[name="payrad"]:checked', '#selectpayment').val();
             if(selectedpayment=='visa'){
                 if(isselected.paypal == true){
-                     $('.paypal').toggleClass("symbol-block-selected");
+                     toggle('.paypal')
                      isselected.paypal = false;
                 }
                 else if(isselected.visa == true){
-                     $('.visa').toggleClass("symbol-block-selected");
+                     toggle('.visa')
                      isselected.paypal = false;
                 }
                 else if(isselected.mm == true){
-                     $('.mm').toggleClass("symbol-block-selected");
+                     toggle('.mm')
                      isselected.mm = false;
                 }
-                $('.visa').toggleClass("symbol-block-selected");
+                toggle('.visa')
                 isselected.visa = true;
             }
             else if(selectedpayment=='paypal'){
                 if (isselected.visa == true){
-                    $('.visa').toggleClass("symbol-block-selected");
+                    toggle('.visa')
                     isselected.visa = false;
                 }
                 else if (isselected.paypal == true){
-                    $('.paypal').toggleClass("symbol-block-selected");
+                    toggle('.paypal')
                     isselected.paypal = false;
                 }
                 else if (isselected.mm == true){
-                    $('.mm').toggleClass("symbol-block-selected");
+                    toggle('.mm')
                     isselected.mm = false;
                 }
-                $('.paypal').toggleClass("symbol-block-selected");
+                toggle('.paypal')
                 isselected.paypal = true;
             }
             else if(selectedpayment=='mm'){
                 if (isselected.mm == true){
-                    $('.mm').toggleClass("symbol-block-selected");
+                    toggle('.mm')
                     isselected.mm = false;
                 }
                 else if (isselected.paypal == true){
-                    $('.paypal').toggleClass("symbol-block-selected");
+                    toggle('.paypal')
                     isselected.paypal = false;
                 }
                 else if (isselected.visa == true){
-                    $('.visa').toggleClass("symbol-block-selected");
+                    toggle('.visa')
                     isselected.visa = false;
                 }
-                $('.mm').toggleClass("symbol-block-selected");
+                toggle('.mm')
                 isselected.mm = true;
             }
-            console.log(selectedpayment)
         });
         
         $("#pay-stripe").on('click', function(){
