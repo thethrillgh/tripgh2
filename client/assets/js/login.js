@@ -9,7 +9,7 @@ $(document).ready(function () {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
         var user = JSON.parse(sessionStorage.getItem("user"));
-        console.log(user)
+        
     }   
 });
 
