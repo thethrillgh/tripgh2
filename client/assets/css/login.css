@@ -93,11 +93,6 @@ body{
 	margin:8px 0;
 	
 }
-.sa-innate-form input[type=submit]:hover{
-border:1px solid#db3b2b;
-background:#db3b2b;
-color:#fff;
-}
 
 .sa-innate-form button{
 border:1px solid#42DCA3;
@@ -108,8 +103,8 @@ font-size:14px;
 margin-top:5px;
 }
 .sa-innate-form button:hover{
-border:1px solid blue;
-background:blue;
+border:1px solid #53B1DE;
+background:#53B1DE;
 color:#fff;
 }
 .sa-innate-form p{
