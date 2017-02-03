@@ -10,7 +10,8 @@ var path = require('path');
 var bcrypt = require('bcrypt-nodejs');
 
 var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+  , LocalStrategy = require('passport-local').Strategy
+  , FacebookStrategy = require('passport-facebook').Strategy;
 
 function gen() {
     return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
@@ -72,12 +73,18 @@ router.post('/login',
                                    failureFlash: false })
 );
 
-passport.use('local-signup', new LocalStrategy(
-    function( username, password, done) {
+passport.use('local-signup', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+    },
+    function(req, username, password, done) {
         // asynchronous
         process.nextTick(function(){
         // checking to see if the user trying to login already exists
         db.users.findOne({ 'username' :  username }, function(err, user) {
+            //check if email and lowercase
+            var email = req.body.email;
             // if there are any errors, return the error
             if (err)
                 return done(err);
@@ -95,6 +102,10 @@ passport.use('local-signup', new LocalStrategy(
                     'username': username,
                     'password': generateHash(password)
                 }
+                if(email){
+                    email = email.toLowerCase();
+                    newUser.email = email;
+                }
                 // save the user
                 db.users.save(newUser, function(err) {
                     if (err)
@@ -105,6 +116,62 @@ passport.use('local-signup', new LocalStrategy(
         });
         });
 
+    }));
+
+//Facebook OAuth
+passport.use(new FacebookStrategy({
+    clientID: '207718569694656',
+    clientSecret: '8766d5ee2bacc8a47c9fe02f822d212e',
+    callbackURL: "http://localhost:2000/api/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous
+        process.nextTick(function() {
+
+            // find the user in the database based on their facebook id
+            db.users.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+                // if there is an error, stop everything and return that
+                // ie an error connecting to the database
+                if (err)
+                    return done(err);
+
+                // if the user is found, then log them in
+                if (user) {
+                    return done(null, user); // user found, return that user
+                } else {
+                    // if there is no user found with that facebook id, create them
+                    var newUser            = new User();
+
+                    // set all of the facebook information in our user model
+                    newUser.facebook.id    = profile.id; // set the users facebook id                   
+                    newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
+                    newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+                    newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+
+                    // save our user to the database
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+
+                        // if successful, return the new user
+                        return done(null, newUser);
+                    });
+                }
+
+            });
+        });
+  }
+));
+
+//router for facebook auth
+router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+// handle the callback after facebook has authenticated the user
+router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+        successRedirect : '/api/success',
+        failureRedirect : '/api/login'
     }));
 
 //router for login form
@@ -121,7 +188,7 @@ router.get('/login', function(req, res, next){
 //route for check
 router.get('/check', function(req, res, next){
     if(req.user){
-        console.log('user is '+req.session.passport.user)
+        console.log('checking, user is '+req.session.passport.user)
         res.send('you are logged in ')
     }
     else{
@@ -142,7 +209,7 @@ router.get('/logout', function(req, res, next){
 //route for login success
 router.get('/success', ensureAuthenticated, function(req, res, next){
 //    res.redirect('/login')
-    console.log('user is '+req.session.passport.user)
+    console.log('success, user is '+req.session.passport.user)
     res.send(true)
 });
 
@@ -153,18 +220,6 @@ router.get('/cookie', function(req, res, next){
     res.send(req.session.item)
 });
 
-//Get all users
-router.get('/myusers', function(req, res, next){
-    db.users.find(
-        {}, 
-    
-    function(error, tasks){
-        if(error){
-            res.send(error);
-        }
-        res.json(tasks);
-    });
-});
 //Get all tickets
 router.get('/tickets', function(req, res, next){
     db.cities.find(

@@ -32,16 +32,15 @@ $(document).ready(function () {
             var formData2 = {
                 'username' : $('#username').val(),
                 'password' : $('#password').val(),    
-                'name' : $('#name').val()     
+                'email' : $('#email').val()     
             };
-            console.log(formData2)
             $.ajax({
                 url: '/api/signup',
                 method: 'POST',
                 data: formData2,
                 dataType: 'json',
                 success: function(response) {                
-                    console.log(response)
+                    console.log('response is '+response)
                 },
                 error: function(error){
                     console.log(error)
