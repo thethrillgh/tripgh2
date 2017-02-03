@@ -91,6 +91,7 @@ passport.use('local-signup', new LocalStrategy(
                 // create the user
                 // set the user's local credentials
                 var newUser = {
+                    'type': 'user',
                     'username': username,
                     'password': generateHash(password)
                 }
@@ -205,6 +206,7 @@ router.post('/tickets', function(req, res, next){
                res.send(JSON.stringify(err));
            }  else {
                var item = {
+                   type: 'ticket',
                    id: stripeToken,
                    code: gen(),
                    name: req.body.name,
