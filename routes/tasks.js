@@ -1,3 +1,7 @@
+///////////////////////////////////////////
+//Imported modules to use/////////////////
+//////////////////////////////////////////
+
 var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
@@ -8,17 +12,22 @@ var stripe = require("stripe")(
 );
 var path = require('path');
 var bcrypt = require('bcrypt-nodejs');
-
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
-  , FacebookStrategy = require('passport-facebook').Strategy;
+  , FacebookStrategy = require('passport-facebook').Strategy
+  , TwitterStrategy = require('passport-twitter').Strategy
+  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
+// function for generating uniqe code
 function gen() {
     return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
 }
 
+///////////////////////////////////////////
+//Functions for authentication Logic///////
+//////////////////////////////////////////
+
 //deserialize and serielize user for pesistent login session
-// used to serialize the user for the session
 passport.serializeUser(function(user, done) {
     done(null, user._id);
 });
@@ -46,6 +55,12 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login')
 }
 
+
+//////////////////////////////////////
+//Passport authentication Logic///////
+//////////////////////////////////////
+
+//local login logic
 passport.use('local-login', new LocalStrategy(
   function(username, password, done) {
     process.nextTick(function(){
@@ -66,13 +81,7 @@ passport.use('local-login', new LocalStrategy(
   }
 ));
 
-//router for login form
-router.post('/login',
-  passport.authenticate('local-login', { successRedirect: '/api/success',
-                                   failureRedirect: '/api/login',
-                                   failureFlash: false })
-);
-
+//local signup logic
 passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
@@ -120,41 +129,41 @@ passport.use('local-signup', new LocalStrategy({
 
 //Facebook OAuth
 passport.use(new FacebookStrategy({
-    clientID: '207718569694656',
-    clientSecret: '8766d5ee2bacc8a47c9fe02f822d212e',
-    callbackURL: "http://localhost:2000/api/auth/facebook/callback"
+    clientID: '186711008477679',
+    clientSecret: '2a319240558b74dd0ee128fb0da7257a',
+    callbackURL: "http://localhost:2000/api/auth/facebook/callback",
+    passReqToCallback: true
   },
-  function(accessToken, refreshToken, profile, done) {
+  function(req, token, refreshToken, profile, done) {
     // asynchronous
         process.nextTick(function() {
 
             // find the user in the database based on their facebook id
             db.users.findOne({ 'facebook.id' : profile.id }, function(err, user) {
 
-                // if there is an error, stop everything and return that
-                // ie an error connecting to the database
+                // if error connecting db
                 if (err)
                     return done(err);
 
                 // if the user is found, then log them in
                 if (user) {
-                    return done(null, user); // user found, return that user
+                    return done(null, user);
                 } else {
                     // if there is no user found with that facebook id, create them
-                    var newUser            = new User();
-
-                    // set all of the facebook information in our user model
-                    newUser.facebook.id    = profile.id; // set the users facebook id                   
-                    newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-                    newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                    newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-
+                    var newUser = {
+                        type: 'user',
+                        facebook:{ }
+                    };
+                    
+                    // set all of the facebook information in user model
+                    newUser.facebook.id    = profile.id;                
+                    newUser.facebook.token = token;                  
+                    newUser.facebook.name  = profile.displayName; 
+                    
                     // save our user to the database
-                    newUser.save(function(err) {
+                    db.users.save(newUser, function(err) {
                         if (err)
                             throw err;
-
-                        // if successful, return the new user
                         return done(null, newUser);
                     });
                 }
@@ -163,6 +172,114 @@ passport.use(new FacebookStrategy({
         });
   }
 ));
+
+//Twitter OAuth
+passport.use(new TwitterStrategy({
+    consumerKey: 'RKRjQnrdvylhyrZX9skDhs7CY',
+    consumerSecret: 'cB5r8R5XUfWXgA7SHnI3btHnM4klT5jnwRTjkGAfjrKvM1VFkh',
+    callbackURL: "http://localhost:2000/api/auth/twitter/callback",
+    passReqToCallback: true
+  },
+  function(req, token, tokenSecret, profile, done) {
+    // asynchronous
+        process.nextTick(function() {
+
+            // find the user in the database based on their facebook id
+            db.users.findOne({ 'twitter.id' : profile.id }, function(err, user) {
+
+                // if error connecting db
+                if (err)
+                    return done(err);
+
+                // if the user is found, then log them in
+                if (user) {
+                    return done(null, user);
+                } else {
+                    // if there is no user found with that facebook id, create them
+                    var newUser = {
+                        type: 'user',
+                        twitter:{ }
+                    };
+                    // set all of the facebook information in user model
+                    newUser.twitter.id    = profile.id;                
+                    newUser.twitter.token = token;                  
+                    newUser.twitter.name  = profile.username; 
+                    
+                    // save our user to the database
+                    db.users.save(newUser, function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+
+            });
+        });
+  }
+));
+
+//Google OAuth
+passport.use(new GoogleStrategy({
+    clientID: '876727676233-83c4c9lvmsrv1o0ug9objlqjn9fgh58m.apps.googleusercontent.com',
+    clientSecret: 'uWcermqSHY3xc3OAmkrLGVly',
+    callbackURL: "http://localhost:2000/api/auth/google/callback",
+    passReqToCallback: true
+  },
+  function(req, token, tokenSecret, profile, done) {
+    // asynchronous
+        process.nextTick(function() {
+
+            // find the user in the database based on their facebook id
+            db.users.findOne({ 'google.id' : profile.id }, function(err, user) {
+
+                // if error connecting db
+                if (err)
+                    return done(err);
+
+                // if the user is found, then log them in
+                if (user) {
+                    return done(null, user);
+                } else {
+                    // if there is no user found with that facebook id, create them
+                    var newUser = {
+                        type: 'user',
+                        google:{ }
+                    };
+                    // set all of the facebook information in user model
+                    newUser.google.id    = profile.id;                
+                    newUser.google.token = token;                  
+                    newUser.google.name  = profile.displayName; 
+                    
+                    // save our user to the database
+                    db.users.save(newUser, function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+
+            });
+        });
+  }
+));
+
+
+/////////////////////////////////////////////////
+//Passport authorize Logic to Link Accounts///////
+/////////////////////////////////////////////////
+
+
+
+////////////////////////////////////
+//Router authentication Logic///////
+///////////////////////////////////
+
+//router for login form
+router.post('/login',
+  passport.authenticate('local-login', { successRedirect: '/api/success',
+                                   failureRedirect: '/api/login',
+                                   failureFlash: false })
+);
 
 //router for facebook auth
 router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
@@ -173,6 +290,24 @@ router.get('/auth/facebook/callback',
         successRedirect : '/api/success',
         failureRedirect : '/api/login'
     }));
+
+//router for twitter auth
+router.get('/auth/twitter', passport.authenticate('twitter'));
+
+// handle the callback after twitter has authenticated the user
+router.get('/auth/twitter/callback',
+  passport.authenticate('twitter', { successRedirect: '/api/success',
+                                     failureRedirect: '/api/login' }));
+
+
+//router for google auth
+router.get('/auth/google',
+  passport.authenticate('google', { scope: 'https://www.googleapis.com/auth/plus.login' }));
+
+// handle the callback after google has authenticated the user
+router.get('/auth/google/callback',
+  passport.authenticate('google', { successRedirect: '/api/success',
+                                     failureRedirect: '/api/login' }));
 
 //router for login form
 router.post('/signup',
@@ -220,6 +355,14 @@ router.get('/cookie', function(req, res, next){
     res.send(req.session.item)
 });
 
+
+
+
+
+/////////////////////////////
+//Ticket Logic//////////////
+////////////////////////////
+
 //Get all tickets
 router.get('/tickets', function(req, res, next){
     db.cities.find(
@@ -246,6 +389,17 @@ router.get('/tickets/:origin/:destination/:day', function(req, res, next){
         res.json(ticket);
     });
 });
+
+
+
+
+
+
+
+
+/////////////////////////////
+//Stripe Payment Logic///////
+////////////////////////////
 
 //get payment, confirm and send ticket details
 router.post('/tickets', function(req, res, next){
