@@ -12,6 +12,10 @@ var bcrypt = require('bcrypt-nodejs');
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
 
+function gen() {
+    return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
+}
+
 //deserialize and serielize user for pesistent login session
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -55,7 +59,6 @@ passport.use('local-login', new LocalStrategy(
       if (!verified) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-//        console.log('hash msg: '+validPassword(password, user.password))
       return done(null, user);
     });
     });
@@ -95,7 +98,6 @@ passport.use('local-signup', new LocalStrategy(
                 db.users.save(newUser, function(err) {
                     if (err)
                         throw err;
-//                    req.login();
                     return done(null, newUser);
                 });
             }   
@@ -141,6 +143,13 @@ router.get('/success', ensureAuthenticated, function(req, res, next){
 //    res.redirect('/login')
     console.log('user is '+req.session.passport.user)
     res.send(true)
+});
+
+
+//route for login success
+router.get('/cookie', function(req, res, next){
+//    res.send(JSON.stringify(req.session.item))
+    res.send(req.session.item)
 });
 
 //Get all users
@@ -195,102 +204,24 @@ router.post('/tickets', function(req, res, next){
            if(err){
                res.send(JSON.stringify(err));
            }  else {
+               var item = {
+                   id: stripeToken,
+                   code: gen(),
+                   name: req.body.name,
+                   origin: req.body.origin,
+                   destination: req.body.destination,
+                   time: req.body.time,
+                   fare: req.body.fare,
+                   day: req.body.day,
+               }
+               db.users.save(item, function(err) {
+                    if (err)
+                        throw err;
+                });
+               req.session.item=JSON.stringify(item);
                res.redirect("/receipt")
            }
         });
 });
-
-////////////////
-//local login///
-///////////////
-
-////local login
-//passport.use('local-login', new LocalStrategy({
-//    // by default, local strategy uses username and password, we will override with email
-//    usernameField : 'email',
-//    passwordField : 'password',
-//    passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
-//},
-//function(req, email, password, done) {
-//    if (email)
-//        email = email.toLowerCase();
-//
-//    // asynchronous
-//    process.nextTick(function() {
-//        db.users.findOne({ 'local.email' :  email }, function(err, user) {
-//            // if there are any errors, return the error
-//            if (err)
-//                return done(err);
-//
-//            // if no user is found, return the message
-//            if (!user)
-//                return done(null, false, { message: 'Incorrect username.' });
-//
-//            if (!user.validPassword(password))
-//                return done(null, false);
-//            
-//            hash ( password, user.salt, function (err, hash) {
-//                if (err) { return done(err); }
-//                if (hash == user.hash) return done(null, user);
-//                done(null, false, { message: 'Incorrect password.' });
-//            });
-//        });
-//    });
-//
-//}));
-
-//////////////////
-////local Sign Up///
-/////////////////
-//passport.use('local-signup', new LocalStrategy({
-//        // by default, local strategy uses username and password, we will override with email
-//        usernameField : 'email',
-//        passwordField : 'password',
-//        passReqToCallback : true // allows us to pass back the entire request to the callback
-//    },
-//    function(req, email, password, done) {
-//
-//        // asynchronous
-//        // User.findOne wont fire unless data is sent back
-//        process.nextTick(function() {
-//        email = req.params.username;
-//        password = req.params.password;
-//        
-//        // find a user whose email is the same as the forms email
-//        // we are checking to see if the user trying to login already exists
-//        db.users.findOne({ 'local.email' :  email }, function(err, user) {
-//            // if there are any errors, return the error
-//            if (err)
-//                return done(err);
-//
-//            // check to see if theres already a user with that email
-//            if (user) {
-//                return done(null, false, {'signupMessage': 'That email is already taken.'});
-//            } else {
-//
-//                // if there is no user with that email
-//                // create the user
-//                // set the user's local credentials
-//                var localemail    = email;
-//                var localpassword = newUser.generateHash(password);
-//                var newUser = {
-//                    'local.email': email,
-//                    'local.password': localpassword
-//                }
-//
-//                // save the user
-//                db.cities.save(newUser, function(err) {
-//                    if (err)
-//                        throw err;
-//                    return done(null, newUser);
-//                });
-//            }
-//
-//        });    
-//
-//        });
-//
-//    }));
-
 
 module.exports =  router;

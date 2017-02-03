@@ -73,24 +73,6 @@ $(document).ready(function () {
             <i class="ion-arrow-right-a"></i><span> '+ticket.destination+'</span>\
             <span> on '+ticket.day+'</span>\
         ');
-        
-        //payment and contact info
-        $("#pay-ticket").on('click', function(){
-            var tel = $("#tel").val();
-            var pin = $("#pin").val();
-            user.tel = tel;
-            user.pin = pin;
-            $.ajax({
-                url: '/api/tickets',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(user),
-                success: function(response) {
-                    console.log(response);
-                    
-                }
-            });
-        });
         var selectedpayment='';        
         var isselected = {
                 visa: false,
@@ -210,18 +192,19 @@ $(document).ready(function () {
               // token contains id, last4, and card type
               var token = response['id'];
               // insert the token into the form so it gets submitted to the server
+              user.email = $('.emailadd').val();
+              user.name = $('.name').val();
+              user.charge= response;
+              user.day= ticket.day;
               $form.find('input[type=text]').empty();
               $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
               $form.append("<input type='hidden' name='fare' value=" + user.fare + ">");
               $form.append("<input type='hidden' name='time' value=" + user.time + ">");
               $form.append("<input type='hidden' name='origin' value=" + user.origin + ">");
               $form.append("<input type='hidden' name='destination' value=" + user.destination + ">");
-              user.email = $('.emailadd').val();
-              user.name = $('.name').val();
-              user.charge= response;
-              user.day= ticket.day;
-              //sessionStorage
-              sessionStorage.setItem("user", JSON.stringify(user));
+              $form.append("<input type='hidden' name='email' value=" + user.email + ">");
+              $form.append("<input type='hidden' name='day' value=" + user.day + ">");
+             
               $form.get(0).submit();
             }
           }

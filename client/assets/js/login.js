@@ -76,25 +76,6 @@ $(document).ready(function () {
             });      
         })
         
-//        var user = JSON.parse(sessionStorage.getItem("user"));
-//        $('#signup').on('click', function(e){
-//            e.preventDefault();
-//            var username = $("input[name=username]").val();
-//            var password= $("input[name=password]").val();
-////            console.log(username+' '+password)
-//            $.ajax({
-//                url: '/api/signup/'+username+'/'+password,
-//                method: 'POST',
-//                contentType: 'application/json',
-//                success: function(response) {                
-//                    console.log(response)
-//                },
-//                error: function(error){
-//                    console.log(error)
-//                }
-//            });           
-//        })
-        
 
     }   
 });
