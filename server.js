@@ -10,6 +10,7 @@ var app = express();
 var expressSession = require("express-session");
 var cookieParser = require("cookie-parser");
 var passport = require("passport");
+var favicon = require("serve-favicon");
 
 //View Engine
 // app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(expressSession({ secret: 'ghanaba', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(favicon(__dirname + '/client/favicon.ico'));
 
 app.use('/', index);
 app.use('/receipt', receipt);
