@@ -67,13 +67,13 @@ passport.use('local-login', new LocalStrategy(
     db.users.findOne({ username: username }, function(err, user) {
       if (err) { return done(err); }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, req.flash('loginMessage', 'No user found.'));
       }
       if(user){
           var verified= validPassword(password, user.password);
       }
       if (!verified) {
-        return done(null, false, { message: 'Incorrect password.' });
+        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
       }
       return done(null, user);
     });
@@ -100,7 +100,7 @@ passport.use('local-signup', new LocalStrategy({
 
             // check to see if theres already a user with that email
             if (user) {
-                return done(null, false, {'signupMessage': 'That email is already taken.'});
+                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
 
                 // if there is no user with that email
@@ -320,12 +320,13 @@ router.post('/signup',
 router.get('/login', function(req, res, next){
     res.send('fail')
 });
-//route for login fail
+
+//route for connect flash fail
 router.get('/flash', function(req, res, next){
-    req.flash('info', 'Flash is back!');
-    req.flash('info', 'Flash is gone!');
-    res.send(req.flash('info'));
+    var id = req.params.id;
+    res.send(req.flash(id));
 });
+
 //route for check
 router.get('/check', function(req, res, next){
     if(req.user){
@@ -349,7 +350,6 @@ router.get('/logout', function(req, res, next){
 
 //route for login success
 router.get('/success', ensureAuthenticated, function(req, res, next){
-//    res.redirect('/login')
     console.log('success, user is '+req.session.passport.user)
     res.send(true)
 });
@@ -357,7 +357,6 @@ router.get('/success', ensureAuthenticated, function(req, res, next){
 
 //route for login success
 router.get('/cookie', function(req, res, next){
-//    res.send(JSON.stringify(req.session.item))
     res.send(req.session.item)
 });
 
