@@ -6,7 +6,6 @@ var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
 var db = mongojs('mongodb://issifu.suhununu:openme12@ds161028.mlab.com:61028/heroku_xswvm03v', ['cities', 'users']);
-const uuid = require('uuid/v1');
 var stripe = require("stripe")(
   "sk_test_xWYoUSXSZLlNHK0k4r0ekWxA"
 );
