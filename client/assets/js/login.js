@@ -8,6 +8,35 @@ $(document).ready(function () {
         function cap(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
+        
+        $.ajax({
+                url: '/api/check',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response) {
+                    if(response != "not logged in"){
+                        $('.loginlink').hide();
+                        $('.profilelink').removeClass("hide");
+                    }
+                    else{
+//                        $('.profilelink').addClass("hide");
+                        $('.loginlink').show();
+                    }
+                }
+            });
+        
+        $('.logout').on('click', function(){
+            $.ajax({
+                url: '/api/logout',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response) {
+                     $('.profilelink').addClass("hide");
+                     $('.loginlink').show();
+                }
+            });
+        })
+        
         $('#login').on('click', function(){
             event.preventDefault();
             var formData = {
@@ -20,10 +49,25 @@ $(document).ready(function () {
                 data: formData,
                 dataType: 'json',
                 success: function(response) {                
-                    console.log(response)
+                    $('.hide-p').text("You have succesfully logged In");
+                    $(".hide-p").addClass('black');
+                    $('.form-body').removeClass('space');
+                    $("#error").removeClass('alert-danger');
+                    $("#error").addClass('alert-success');
+                    $("#error").show();
+                    $('.loginlink').hide();
+                    $('.profilelink').removeClass("hide");
                 },
                 error: function(error){
-                    console.log(error)
+                    $.ajax({
+                        url: '/api/flash',
+                        dataType: 'json',
+                        success: function(response){
+                            $('.hide-p').text(response.loginMessage);
+                            $('.form-body').removeClass('space');
+                            $("#error").show();
+                        }
+                    })
                 }
             });      
         })
@@ -39,38 +83,39 @@ $(document).ready(function () {
                 method: 'POST',
                 data: formData2,
                 dataType: 'json',
-                success: function(response) {                
-                    console.log('response is '+response)
+                success: function(response) {                            
+                    $('.hide-p').text("You have succesfully signed up");
+                    $(".hide-p").addClass('black');
+                    $('.form-body').removeClass('space');
+                    $("#error").removeClass('alert-danger');
+                    $("#error").addClass('alert-success');
+                    $("#error").show();
                 },
                 error: function(error){
-                    console.log(error)
-                }
-            });      
-        })
-        $('#check').on('click', function(){
-            $.ajax({
-                url: '/api/check',
-                method: 'get',
-                contentType: 'application/json',
-                success: function(response) {                
-                    console.log(response)
-                },
-                error: function(error){
-                    console.log(error)
+                    $('.hide-p').text("Please fill out the form correctly to sign up");
+                    $.ajax({
+                        url: '/api/flash',
+                        dataType: 'json',
+                        success: function(response){
+                            $('.hide-p').text(response.signupMessage);
+                            $('.form-body').removeClass('space');
+                            $("#error").show();
+                        }
+                    })
                 }
             });      
         })
         
-        $('#logout').on('click', function(){
+        $('.logout').on('click', function(){
             $.ajax({
                 url: '/api/logout',
                 method: 'get',
                 contentType: 'application/json',
                 success: function(response) {                
-                    console.log(response)
-                },
-                error: function(error){
-                    console.log(error)
+                    $('.profilelink').addClass("hide");
+                    $('.loginlink').show();
+                    $('.hide-p').text("You have succesfully logged Out");
+                    $(".hide-p").addClass('black');
                 }
             });      
         })

@@ -69,6 +69,47 @@ $(document).ready(function() {
     function cap(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+    if($('body').is('.home')){
+           $.ajax({
+                url: '/api/check',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response) {
+                    if(response != "not logged in"){
+                        $('.loginlink').hide();
+                        $('.profilelink').removeClass("hide");
+                    }
+                    else{
+                        $('.profilelink').addClass("hide");
+                        $('.loginlink').show();
+                    }
+                }
+            });
+        
+            $('.logout').on('click', function(){
+                $.ajax({
+                    url: '/api/logout',
+                    method: 'get',
+                    contentType: 'application/json',
+                    success: function(response) {
+                         $('.profilelink').addClass("hide");
+                         $('.loginlink').show();
+                    }
+                });
+            })
+            $('.logout').on('click', function(){
+            $.ajax({
+                url: '/api/logout',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response) {                
+                    $('.profilelink').addClass("hide");
+                    $('.loginlink').show();
+                }
+            });      
+        })
+    }
+
     
     //Process ticket info
      $('#get-ticket').on('click', function() {

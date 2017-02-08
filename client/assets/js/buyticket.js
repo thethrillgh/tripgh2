@@ -33,6 +33,34 @@ $(document).ready(function () {
             'destination': cap(getUrlVars('destination')),
             'day': cap(getUrlVars('day'))
         };
+        
+        $.ajax({
+                url: '/api/check',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response) {
+                    if(response != "not logged in"){
+                        $('.loginlink').hide();
+                        $('.profilelink').removeClass("hide");
+                    }
+                    else{
+                        $('.profilelink').addClass("hide");
+                        $('.loginlink').show();
+                    }
+                }
+            });
+        
+        $('.logout').on('click', function(){
+            $.ajax({
+                url: '/api/logout',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response) {
+                     $('.profilelink').addClass("hide");
+                     $('.loginlink').show();
+                }
+            });
+        })
         $.ajax({
             url: '/api/tickets/'+ticket.origin+'/'+ticket.destination+'/'+ticket.day,
             contentType: 'application/json',

@@ -61,18 +61,27 @@ function ensureAuthenticated(req, res, next) {
 //////////////////////////////////////
 
 //local login logic
-passport.use('local-login', new LocalStrategy(
-  function(username, password, done) {
+passport.use('local-login', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+    },
+  function(req, username, password, done) {
     process.nextTick(function(){
     db.users.findOne({ username: username }, function(err, user) {
-      if (err) { return done(err); }
+      if (err) { 
+           console.log('not in db')
+          return done(err); 
+      }
       if (!user) {
+           console.log('no user found')
         return done(null, false, req.flash('loginMessage', 'No user found.'));
       }
       if(user){
           var verified= validPassword(password, user.password);
       }
       if (!verified) {
+           console.log('wrong password')
         return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
       }
       return done(null, user);
@@ -100,7 +109,7 @@ passport.use('local-signup', new LocalStrategy({
 
             // check to see if theres already a user with that email
             if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
             } else {
 
                 // if there is no user with that email
@@ -322,9 +331,10 @@ router.get('/login', function(req, res, next){
 });
 
 //route for connect flash fail
-router.get('/flash', function(req, res, next){
-    var id = req.params.id;
-    res.send(req.flash(id));
+router.get('/flash/', function(req, res, next){
+//    req.flash('a', 'b')
+//    req.flash('d', 'e')
+    res.send(req.flash());
 });
 
 //route for check

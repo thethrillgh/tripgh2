@@ -5,7 +5,7 @@
 }
 
 /* form */
-.loginform{
+.space{
     margin-top: 100px;
 }
 
@@ -112,9 +112,22 @@ color:#fff;
     padding-top:10px;
 }
 
+#error{
+    margin-top: 100px;
+    margin-bottom: 10px;
+}
+.black{
+    color: black !important
+}
+
 @media (max-width: 480px){
-    .loginform{
+    .space{
         margin-top: 80px;
+    }
+    
+    #error{
+        margin-top: 60px;
+        margin-bottom: 10px;
     }
     
     .bottom{
