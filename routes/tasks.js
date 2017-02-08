@@ -320,6 +320,12 @@ router.post('/signup',
 router.get('/login', function(req, res, next){
     res.send('fail')
 });
+//route for login fail
+router.get('/flash', function(req, res, next){
+    req.flash('info', 'Flash is back!');
+    req.flash('info', 'Flash is gone!');
+    res.send(req.flash('info'));
+});
 //route for check
 router.get('/check', function(req, res, next){
     if(req.user){
