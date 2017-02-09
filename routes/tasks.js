@@ -364,9 +364,35 @@ router.get('/success', ensureAuthenticated, function(req, res, next){
 });
 
 
-//route for login success
+//route for session item
 router.get('/cookie', function(req, res, next){
     res.send(req.session.item)
+});
+
+//route for user
+router.get('/user', ensureAuthenticated, function(req, res, next){
+    db.users.findOne(
+        {_id: db.ObjectId(req.session.passport.user)},
+    
+    function(error, user){
+        if(error){
+            res.send(error);
+        }
+//        res.json(user)
+        var username = user.username;
+        console.log(username)
+        db.users.find(
+            { type: 'ticket',   'user': req.session.passport.user},
+
+        function(error, tickets){
+            if(error){
+                res.send(error);
+            }
+            var r = tickets[0];
+            r.username = username;
+            res.json(r)
+        });
+    });
 });
 
 
@@ -438,6 +464,9 @@ router.post('/tickets', function(req, res, next){
                    time: req.body.time,
                    fare: req.body.fare,
                    day: req.body.day,
+               }
+               if(req.user){
+                   item.user=req.session.passport.user;
                }
                db.users.save(item, function(err) {
                     if (err)

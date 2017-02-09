@@ -3,12 +3,7 @@
  ------------------------------------------*/
 $(document).ready(function () {
     
-    if($('body').is('.login')){
-        //capitalize first letter
-        function cap(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-        
+    if($('body').is('.login')){        
         $.ajax({
                 url: '/api/check',
                 method: 'get',
