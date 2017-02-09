@@ -1,0 +1,13 @@
+.footer{
+	text-align: center;
+	padding: 20px;
+	background: #42DCA3;
+}
+
+@media (max-width: 480px){
+    #footer{
+        height: 50px;
+    }
+
+}
+
