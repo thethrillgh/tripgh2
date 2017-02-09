@@ -12,9 +12,14 @@ $(document).ready(function () {
                     if(response != "not logged in"){
                         $('.loginlink').hide();
                         $('.profilelink').removeClass("hide");
+                        $('.hide-p').text("You have succesfully logged In");
+                        $(".hide-p").addClass('black');
+                        $('.form-body').removeClass('space');
+                        $("#error").removeClass('alert-danger');
+                        $("#error").addClass('alert-success');
+                        $("#error").show();
                     }
                     else{
-//                        $('.profilelink').addClass("hide");
                         $('.loginlink').show();
                     }
                 }
@@ -52,6 +57,9 @@ $(document).ready(function () {
                     $("#error").show();
                     $('.loginlink').hide();
                     $('.profilelink').removeClass("hide");
+                    setTimeout(function(){
+                        window.location.href="profile.html"
+                    }, 1000)
                 },
                 error: function(error){
                     $.ajax({

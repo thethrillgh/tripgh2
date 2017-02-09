@@ -15,6 +15,23 @@ $(document).ready(function () {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
         $.ajax({
+                url: '/api/check',
+                method: 'get',
+                contentType: 'application/json',
+                success: function(response, status, jqXHR) {
+                    if ( jqXHR.getResponseHeader('content-type').indexOf('text/html') >= 0 ){
+                        window.location.href = "login.html"
+                    }
+                    if(response != "not logged in"){
+                        $('.loginlink').hide();
+                        $('.profilelink').removeClass("hide");
+                    }
+                    else{
+                        $('.loginlink').show();
+                    }
+                }
+        });      
+        $.ajax({
         url: '/api/cookie',
         contentType: 'application/json',
         success: function(response) { 
@@ -32,30 +49,17 @@ $(document).ready(function () {
                 $('.reportingtext').text(report);
         }
         });
-//            $('.confirmationtext').text(user.charge.id);
-//            $('.nametext').text(user.name);
-//            $('.origintext').text(user.origin);
-//            $('.destinationtext').text(user.destination);
-//            $('.faretext').text(user.fare);
-//            $('.timetext').text(user.time);
-//            $('.daytext').text(user.day);
-//            var rep = parseInt(user.time.split(":")[0])-1;
-//            var report = rep+":"+user.time.split(":")[1];
-//            $('.reportingtext').text(report);
-            
-        
-        $('#check').on('click', function(){
+        $('.logout').on('click', function(){
             $.ajax({
-                url: '/api/cookie',
+                url: '/api/logout',
                 method: 'get',
                 contentType: 'application/json',
-                success: function(response) {                
-                    console.log(response)
-                },
-                error: function(error){
-                    console.log(error)
+                success: function(response) {
+                     $('.profilelink').addClass("hide");
+                     $('.loginlink').show();
+                     window.location.href="index.html"
                 }
-            });      
+            });
         })
     }
 });

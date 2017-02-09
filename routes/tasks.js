@@ -378,9 +378,7 @@ router.get('/user', ensureAuthenticated, function(req, res, next){
         if(error){
             res.send(error);
         }
-//        res.json(user)
         var username = user.username;
-        console.log(username)
         db.users.find(
             { type: 'ticket',   'user': req.session.passport.user},
 
@@ -388,8 +386,14 @@ router.get('/user', ensureAuthenticated, function(req, res, next){
             if(error){
                 res.send(error);
             }
-            var r = tickets[0];
-            r.username = username;
+            var r = {ticket: tickets, username: username};
+            r.ticket.forEach(function(a){
+                delete a._id;
+                delete a.type;
+                delete a.id;
+                delete a.name;
+                delete a.user;
+            })
             res.json(r)
         });
     });
@@ -456,7 +460,7 @@ router.post('/tickets', function(req, res, next){
            }  else {
                var item = {
                    type: 'ticket',
-                   id: stripeToken,
+                   id: charge.id,
                    code: gen(),
                    name: req.body.name,
                    origin: req.body.origin,

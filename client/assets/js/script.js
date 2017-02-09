@@ -105,6 +105,7 @@ $(document).ready(function() {
                 success: function(response) {                
                     $('.profilelink').addClass("hide");
                     $('.loginlink').show();
+                    window.location.href="index.html"
                 }
             });      
         })
