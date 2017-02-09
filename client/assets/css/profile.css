@@ -4,6 +4,41 @@
 	background: #42DCA3;
 }
 
+.profilebody{
+    color: black;
+    margin-top: 70px;
+}
+
+.box{
+    height: 230px;
+    width: 230px;
+    background-color: darkgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+
+.box img {
+    object-fit: contain;
+    min-width: 100%;
+    min-height: 100%
+}
+
+.profilename{
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    color: #666;
+    padding: 16px 0 16px 0;
+}
+
+.edit{
+    width: 230px;
+    text-align: center;
+}
+
 @media (max-width: 480px){
     #footer{
         height: 50px;
