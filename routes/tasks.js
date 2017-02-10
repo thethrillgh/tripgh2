@@ -139,7 +139,7 @@ passport.use('local-signup', new LocalStrategy({
 passport.use(new FacebookStrategy({
     clientID: '186711008477679',
     clientSecret: '2a319240558b74dd0ee128fb0da7257a',
-    callbackURL: "http://localhost:2000/api/auth/facebook/callback",
+    callbackURL: "http://tripgh.com/api/auth/facebook/callback",
     passReqToCallback: true
   },
   function(req, token, refreshToken, profile, done) {
@@ -185,7 +185,7 @@ passport.use(new FacebookStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: 'RKRjQnrdvylhyrZX9skDhs7CY',
     consumerSecret: 'cB5r8R5XUfWXgA7SHnI3btHnM4klT5jnwRTjkGAfjrKvM1VFkh',
-    callbackURL: "http://localhost:2000/api/auth/twitter/callback",
+    callbackURL: "http://tripgh.com/api/auth/twitter/callback",
     passReqToCallback: true
   },
   function(req, token, tokenSecret, profile, done) {
@@ -230,7 +230,7 @@ passport.use(new TwitterStrategy({
 passport.use(new GoogleStrategy({
     clientID: '876727676233-83c4c9lvmsrv1o0ug9objlqjn9fgh58m.apps.googleusercontent.com',
     clientSecret: 'uWcermqSHY3xc3OAmkrLGVly',
-    callbackURL: "http://localhost:2000/api/auth/google/callback",
+    callbackURL: "http://tripgh.com/api/auth/google/callback",
     passReqToCallback: true
   },
   function(req, token, tokenSecret, profile, done) {
