@@ -377,7 +377,20 @@ router.get('/user', ensureAuthenticated, function(req, res, next){
         if(error){
             res.send(error);
         }
-        var username = user.username;
+        var username;
+        if(user.facebook){
+            username = user.facebook.name
+        }
+        else if(user.twitter){
+            username = user.twitter.name
+        }
+        else if(user.google){
+            username = user.google.name
+        }
+        else{
+            username = user.username;
+        }
+        console.log('username '+JSON.stringify(user))
         db.users.find(
             { type: 'ticket',   'user': req.session.passport.user},
 
