@@ -5,6 +5,7 @@ var index =  require('./routes/index');
 var tasks =  require('./routes/tasks');
 var receipt =  require('./routes/receipt');
 var login =  require('./routes/login');
+var profile =  require('./routes/profile');
 var port = process.env.PORT || 2000;
 var app = express();
 var expressSession = require("express-session");
@@ -37,6 +38,7 @@ app.use(flash());
 app.use('/', index);
 app.use('/receipt', receipt);
 app.use('/login', login);
+app.use('/profile', profile);
 app.use('/api', tasks);
 
 app.listen(port, function(){

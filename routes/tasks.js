@@ -359,8 +359,7 @@ router.get('/logout', function(req, res, next){
 
 //route for login success
 router.get('/success', ensureAuthenticated, function(req, res, next){
-    console.log('success, user is '+req.session.passport.user)
-    res.send(true)
+    res.redirect("/profile")
 });
 
 

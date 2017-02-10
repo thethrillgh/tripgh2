@@ -19,9 +19,6 @@ $(document).ready(function () {
                 method: 'get',
                 contentType: 'application/json',
                 success: function(response, status, jqXHR) {
-                    if ( jqXHR.getResponseHeader('content-type').indexOf('text/html') >= 0 ){
-                        window.location.href = "login.html"
-                    }
                     if(response != "not logged in"){
                         $('.loginlink').hide();
                         $('.profilelink').removeClass("hide");
